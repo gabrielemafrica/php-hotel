@@ -23,7 +23,25 @@
 </head>
 
 <body>
-    
+    <div class="container d-flex justify-content-center">
+
+        <form method="get">
+            
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="conParcheggio">
+                <label class="form-check-label" for="conParcheggio">
+                    CON PARCHEGGIO
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="senzaParcheggio">
+                <label class="form-check-label" for="senzaParcheggio">
+                    SENZA PARCHEGGIO
+                </label>
+            </div>
+            <input type="submit" value="parcheggio">
+        </form>
+    </div>
 <?php 
     // array dell'hotel
         $hotels = [
@@ -111,6 +129,8 @@
                 </thead>
                 <tbody>
                     <?php
+                    if ($_GET == []) {
+                       
                         foreach ($hotels as $key => $hotel) {
                             echo "<tr>";
                             foreach ($hotel as $key => $value) {
@@ -128,6 +148,41 @@
                             }
                             echo "</tr>";
                         }
+                    } elseif (isset($_GET["conParcheggio"])) {
+                        // Stampa solo gli hotel con parcheggio
+                        foreach ($hotels as $key => $hotel) {
+                            if ($hotel['parking']) {
+                                echo "<tr>";
+                                foreach ($hotel as $key => $value) {
+                                    if ($key == 'name') {
+                                        echo "<th>". $value. "</th>";
+                                    } elseif ($key == 'parking'){
+                                        echo "<td>Si</td>";
+                                    } else {
+                                        echo "<td>". $value. "</td>";
+                                    }
+                                }
+                            }
+                            echo "</tr>";
+                        }
+                    } elseif (isset($_GET["senzaParcheggio"])) {
+                        // Stampa solo gli hotel con parcheggio
+                        foreach ($hotels as $key => $hotel) {
+                            if (!$hotel['parking']) {
+                                echo "<tr>";
+                                foreach ($hotel as $key => $value) {
+                                    if ($key == 'name') {
+                                        echo "<th>". $value. "</th>";
+                                    } elseif ($key == 'parking'){
+                                        echo "<td>No</td>";
+                                    } else {
+                                        echo "<td>". $value. "</td>";
+                                    }
+                                }
+                            }
+                            echo "</tr>";
+                        }
+                    }
                     ?>  
                 </tbody>
             </table>
